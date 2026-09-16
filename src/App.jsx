@@ -750,12 +750,12 @@ function Footer() {
               <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/60">Currently booking</span>
             </div>
             <a
-              href="https://instagram.com/natilume"
+              href="https://www.instagram.com/nati.lume/"
               target="_blank"
               rel="noreferrer"
               className="mt-4 inline-flex items-center gap-2 text-sm text-white/60 lift-on-hover w-fit"
             >
-              <AtSign className="h-4 w-4" /> natilume
+              <AtSign className="h-4 w-4" /> nati.lume
             </a>
           </div>
 
