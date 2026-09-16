@@ -616,10 +616,34 @@ function ContactForm() {
   }
   const removeFile = (i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
     setStatus('sending')
-    setTimeout(() => setStatus('sent'), 1200)
+
+    const form = new FormData(e.target)
+    const date = form.get('date')?.trim()
+    const message = form.get('message')?.trim() ?? ''
+
+    try {
+      const res = await fetch('https://loopline-ten.vercel.app/api/v1/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer loop_d3e4e803f7a25f93c4061f4275e8bd257378ceceb5d83072',
+        },
+        body: JSON.stringify({
+          name: form.get('name'),
+          email: form.get('email'),
+          phone: form.get('phone') || undefined,
+          message: date ? `Shoot date: ${date}\n\n${message}` : message,
+          source: 'natilume-site',
+        }),
+      })
+      if (!res.ok) throw new Error('request failed')
+      setStatus('sent')
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -712,6 +736,12 @@ function ContactForm() {
                     </ul>
                   )}
                 </div>
+
+                {status === 'error' && (
+                  <p className="text-xs text-primary-light">
+                    Something went wrong sending that — mind trying again, or emailing us directly?
+                  </p>
+                )}
 
                 <button
                   type="submit"
